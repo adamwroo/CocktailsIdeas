@@ -1,0 +1,53 @@
+﻿@page "/allcocktails"
+@using CocktailsIdeas.Shared
+@inject HttpClient HttpClient
+
+<h1>Cocktails</h1>
+@if (cocktails == null)
+{
+    <text>Loading cocktails...</text>
+}
+else
+{
+    foreach (var cocktail in cocktails)
+    {
+        <h3>@cocktail.Name</h3>
+        @if (cocktail.Ingredients?.Any() != true)
+        {
+            <h5>(no ingredients)</h5>
+        }
+        else
+        {
+            <h5>Ingredients</h5>
+            <ul>
+                @foreach (var ingredient in cocktail.Ingredients)
+                {
+                    <li>@ingredient</li>
+                }
+            </ul>
+        }
+        @if (cocktail.Steps?.Any() != true)
+        {
+            <h5>(no steps)</h5>
+        }
+        else
+        {
+            <h5>Steps</h5>
+            <ol>
+                @foreach (var step in cocktail.Steps)
+                {
+                    <li>@step</li>
+                }
+            </ol>
+        }
+    }
+}
+
+@code {
+    List<Cocktail> cocktails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cocktails = await HttpClient.GetFromJsonAsync<List<Cocktail>>("cocktails");
+    }
+}
