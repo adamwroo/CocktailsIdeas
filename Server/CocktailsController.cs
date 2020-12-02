@@ -23,5 +23,11 @@ namespace CocktailsIdeas.Server
         {
             return (await _cosmosDbService.GetItemsAsync("SELECT * FROM c")).ToList();
         }
+
+        [HttpPost]
+        public async Task AddNewCocktail(Cocktail cocktail)
+        {
+            await _cosmosDbService.AddItemAsync(cocktail);
+        }
     }
 }

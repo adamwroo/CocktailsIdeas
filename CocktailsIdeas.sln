@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailsIdeas.Server", "Server\CocktailsIdeas.Server.csproj", "{69E976C7-6F5A-4291-8C8D-E2DD2CC9FCA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailsIdeas.Server", "Server\CocktailsIdeas.Server.csproj", "{69E976C7-6F5A-4291-8C8D-E2DD2CC9FCA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailsIdeas.Client", "Client\CocktailsIdeas.Client.csproj", "{024716BF-88E9-4222-A36A-37E2B7F69088}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailsIdeas.Client", "Client\CocktailsIdeas.Client.csproj", "{024716BF-88E9-4222-A36A-37E2B7F69088}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailsIdeas.Shared", "Shared\CocktailsIdeas.Shared.csproj", "{32A585BB-2761-4909-B736-536FBDFDD640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailsIdeas.Shared", "Shared\CocktailsIdeas.Shared.csproj", "{32A585BB-2761-4909-B736-536FBDFDD640}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

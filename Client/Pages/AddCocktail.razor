@@ -1,0 +1,62 @@
+﻿@page "/addcocktail"
+@using CocktailsIdeas.Shared
+@inject HttpClient httpClient
+
+<h3>Add a cocktail</h3>
+<label>Name: </label>
+<input @bind="cocktail.Name" @bind:event="oninput" />
+<br/>
+<label>Ingredients:</label>
+<input @bind="newIngredient" @bind:event="oninput" />
+<button type="button" @onclick="AddIngredient" disabled="@string.IsNullOrWhiteSpace(newIngredient)">+</button>
+<ul>
+    @foreach (var ingredient in cocktail.Ingredients)
+    {
+        <li>@ingredient</li>
+    }
+</ul>
+<label>Steps:</label>
+<input @bind="newStep" @bind:event="oninput" />
+<button @onclick="AddStep" disabled="@string.IsNullOrWhiteSpace(newStep)">+</button>
+<ol>
+    @foreach (var step in cocktail.Steps)
+    {
+        <li>@step</li>
+    }
+</ol>
+
+<div>
+    <button @onclick="AddNewCocktail" disabled="@(!IsCocktailValid())">Add cocktail</button>
+</div>
+
+@code {
+    private Cocktail cocktail = new Cocktail();
+    private string newIngredient;
+    private string newStep;
+
+    private void AddIngredient()
+    {
+        cocktail.Ingredients.Add(newIngredient);
+        newIngredient = string.Empty;
+    }
+
+    private void AddStep()
+    {
+        cocktail.Steps.Add(newStep);
+        newStep = string.Empty;
+    }
+
+    private bool IsCocktailValid()
+    {
+        return !string.IsNullOrWhiteSpace(cocktail.Name) && cocktail.Ingredients.Any() && cocktail.Steps.Any();
+    }
+
+    private async void AddNewCocktail()
+    {
+        var response = await httpClient.PostAsJsonAsync("cocktails", cocktail);
+        if (response.IsSuccessStatusCode)
+        {
+            cocktail = new Cocktail();
+        }
+    }
+}

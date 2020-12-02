@@ -1,4 +1,5 @@
-﻿using CocktailsIdeas.Shared;
+﻿using System;
+using CocktailsIdeas.Shared;
 using Microsoft.Azure.Cosmos;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,12 @@ namespace CocktailsIdeas.Server.Services
             }
 
             return results;
+        }
+
+        public async Task AddItemAsync(Cocktail cocktail)
+        {
+            cocktail.id = Guid.NewGuid().ToString();
+            await _container.CreateItemAsync(cocktail);
         }
     }
 }

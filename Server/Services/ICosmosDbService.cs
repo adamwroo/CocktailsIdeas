@@ -7,5 +7,7 @@ namespace CocktailsIdeas.Server.Services
     public interface ICosmosDbService
     {
         Task<IEnumerable<Cocktail>> GetItemsAsync(string queryString);
+
+        Task AddItemAsync(Cocktail cocktail);
     }
 }

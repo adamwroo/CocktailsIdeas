@@ -1,6 +1,6 @@
 ﻿@page "/allcocktails"
 @using CocktailsIdeas.Shared
-@inject HttpClient HttpClient
+@inject HttpClient httpClient
 
 <h1>Cocktails</h1>
 @if (cocktails == null)
@@ -48,6 +48,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        cocktails = await HttpClient.GetFromJsonAsync<List<Cocktail>>("cocktails");
+        cocktails = await httpClient.GetFromJsonAsync<List<Cocktail>>("cocktails");
     }
 }
