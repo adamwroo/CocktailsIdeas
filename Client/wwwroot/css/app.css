@@ -2,6 +2,8 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #374046;
+    background-color: #374046;
 }
 
 a, .btn-link {
@@ -48,3 +50,35 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.cocktails-loading {
+    color: #ffffff
+}
+
+.cocktails-grid {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    grid-auto-rows: 20px;
+}
+
+.cocktail-item {
+    background-color: #ffffff;
+}
+
+.cocktail-item-title {
+    padding: 20px;
+    background-color: #ff9800;
+}
+
+.cocktail-item-title h3 {
+    font-size: 1.2em;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+}
+
+.cocktail-item-desc {
+    padding: 10px 10px 5px 10px;
+}
