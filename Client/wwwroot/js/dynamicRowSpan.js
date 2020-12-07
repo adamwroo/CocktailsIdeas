@@ -1,27 +1,26 @@
-﻿function resizeGridItem(item) {
-    let grid = document.getElementsByClassName("cocktails-grid")[0];
-    let rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
-    let rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
-    let rowSpan = Math.ceil((item.querySelector('.cocktail-item-content').getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
-    item.style.gridRowEnd = "span " + rowSpan;
-}
+﻿(function() {
+    window.dynamicRowSpan = {
+        initialize: function () {
+            resizeAllGridItems();
+            window.addEventListener("resize", resizeAllGridItems);
+        }
+    };
 
-function resizeAllGridItems() {
-    let allItems = document.getElementsByClassName("cocktail-item");
-    for (x = 0; x < allItems.length; x++) {
-        resizeGridItem(allItems[x]);
+    // source: https://css-tricks.com/piecing-together-approaches-for-a-css-masonry-layout/
+    function resizeGridItem(item) {
+        const grid = document.getElementsByClassName("cocktails-grid")[0];
+        const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+        const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+        const rowSpan =
+            Math.ceil((item.querySelector('.cocktail-item-content').getBoundingClientRect().height + rowGap) /
+                (rowHeight + rowGap));
+        item.style.gridRowEnd = "span " + rowSpan;
     }
-}
 
-function resizeInstance(instance) {
-    let item = instance.elements[0];
-    resizeGridItem(item);
-}
-
-window.onload = resizeAllGridItems();
-window.addEventListener("resize", resizeAllGridItems);
-
-/*allItems = document.getElementsByClassName("cocktail-item");
-for (x = 0; x < allItems.length; x++) {
-    imagesLoaded(allItems[x], resizeInstance);
-}*/
+    function resizeAllGridItems() {
+        const allItems = document.getElementsByClassName("cocktail-item");
+        for (let x = 0; x < allItems.length; x++) {
+            resizeGridItem(allItems[x]);
+        }
+    }
+})();

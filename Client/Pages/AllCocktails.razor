@@ -1,6 +1,7 @@
 ﻿@page "/allcocktails"
 @using CocktailsIdeas.Shared
 @inject HttpClient httpClient
+@inject IJSRuntime JSRuntime
 
 @if (cocktails == null)
 {
@@ -35,19 +36,19 @@ else
                         }
                     </div>
                     @*@if (cocktail.Steps?.Any() != true)
-                    {
-                        <h5>(no steps)</h5>
-                    }
-                    else
-                    {
-                        <h5>Steps</h5>
-                        <ol>
-                            @foreach (var step in cocktail.Steps)
-                            {
-                                <li>@step</li>
-                            }
-                        </ol>
-                    }*@
+                        {
+                            <h5>(no steps)</h5>
+                        }
+                        else
+                        {
+                            <h5>Steps</h5>
+                            <ol>
+                                @foreach (var step in cocktail.Steps)
+                                {
+                                    <li>@step</li>
+                                }
+                            </ol>
+                        }*@
                 </div>
             </div>
         }
@@ -60,5 +61,10 @@ else
     protected override async Task OnInitializedAsync()
     {
         cocktails = await httpClient.GetFromJsonAsync<List<Cocktail>>("cocktails");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("dynamicRowSpan.initialize");
     }
 }
