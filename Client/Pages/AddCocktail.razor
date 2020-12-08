@@ -4,35 +4,41 @@
 
 <h3>Add a cocktail</h3>
 
-<input @bind="cocktail.Name" @bind:event="oninput" placeholder="Cocktail's name" aria-label="Cocktail's name" />
-<div>
-    <h5>Ingredients</h5>
-    <ul>
-        @foreach (var ingredient in cocktail.Ingredients.Select((e, i) => new { Ingredient = e, Index = i }))
-        {
-            <li>
-                <input value="@ingredient.Ingredient" @oninput="@(e => OnIngredientChanged(e, ingredient.Index))"
-                       placeholder="new ingredient" aria-label="ingredient" />
-            </li>
-        }
-    </ul>
-</div>
-<div>
-    <h5>Steps</h5>
-    <ul>
-        @foreach (var ingredient in cocktail.Steps.Select((e, i) => new { Step = e, Index = i }))
-        {
-            <li>
-                <input value="@ingredient.Step" @oninput="@(e => OnStepChanged(e, ingredient.Index))"
-                       placeholder="new step" aria-label="step" />
-            </li>
-        }
-    </ul>
-</div>
+<EditForm Model="cocktail" OnValidSubmit="AddNewCocktail">
+    <DataAnnotationsValidator />
+    <InputText @bind-Value="cocktail.Name" placeholder="Cocktail's name" aria-label="Cocktail's name" />
+    <ValidationMessage For="@(() => cocktail.Name)" />
+    <div>
+        <h5>Ingredients</h5>
+        <ValidationMessage For="@(() => cocktail.Ingredients)" />
+        <ul>
+            @foreach (var ingredient in cocktail.Ingredients.Select((e, i) => new { Ingredient = e, Index = i }))
+            {
+                <li>
+                    <input value="@ingredient.Ingredient" @oninput="@(e => OnIngredientChanged(e, ingredient.Index))"
+                           placeholder="new ingredient" aria-label="ingredient" />
+                </li>
+            }
+        </ul>
+    </div>
+    <div>
+        <h5>Steps</h5>
+        <ValidationMessage For="@(() => cocktail.Steps)" />
+        <ul>
+            @foreach (var ingredient in cocktail.Steps.Select((e, i) => new { Step = e, Index = i }))
+            {
+                <li>
+                    <input value="@ingredient.Step" @oninput="@(e => OnStepChanged(e, ingredient.Index))"
+                           placeholder="new step" aria-label="step" />
+                </li>
+            }
+        </ul>
+    </div>
 
-<div>
-    <button @onclick="AddNewCocktail" disabled="@isSubmitting">Add cocktail</button>
-</div>
+    <div>
+        <button type="submit" disabled="@isSubmitting">Add cocktail</button>
+    </div>
+</EditForm>
 
 @code {
     private Cocktail cocktail = new Cocktail();
@@ -60,6 +66,7 @@
         {
             // if the last one has been updated, add an empty one at the end of the list
             cocktail.Ingredients.Add(string.Empty);
+            // todo: validation should be updated
         }
 
         cocktail.Ingredients[index] = changedIngredient;
@@ -80,6 +87,7 @@
         {
             // if the last one has been updated, add an empty one at the end of the list
             cocktail.Steps.Add(string.Empty);
+            // todo: validation should be updated
         }
 
         cocktail.Steps[index] = changedStep;
@@ -105,6 +113,7 @@
         {
             cocktail = new Cocktail();
             cocktail.Ingredients.Add(string.Empty);
+            cocktail.Steps.Add(string.Empty);
         }
 
         isSubmitting = false;
