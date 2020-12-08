@@ -27,6 +27,10 @@ namespace CocktailsIdeas.Server
         [HttpPost]
         public async Task AddNewCocktail(Cocktail cocktail)
         {
+            // clean up
+            cocktail.Ingredients = cocktail.Ingredients.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            cocktail.Steps = cocktail.Steps.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+
             await _cosmosDbService.AddItemAsync(cocktail);
         }
     }

@@ -37,10 +37,6 @@
 
     protected override void OnInitialized()
     {
-        // add placeholders for a new ingredient and step
-        cocktail.Ingredients.Add(string.Empty);
-        cocktail.Steps.Add(string.Empty);
-
         editContext = new EditContext(cocktail);
     }
 
@@ -48,16 +44,10 @@
     {
         isSubmitting = true;
 
-        // remove the last ingredient and step (they're only placeholders)
-        cocktail.Ingredients.RemoveAt(cocktail.Ingredients.Count - 1);
-        cocktail.Steps.RemoveAt(cocktail.Steps.Count - 1);
-
         var response = await httpClient.PostAsJsonAsync("cocktails", cocktail);
         if (response.IsSuccessStatusCode)
         {
             cocktail = new Cocktail();
-            cocktail.Ingredients.Add(string.Empty);
-            cocktail.Steps.Add(string.Empty);
         }
 
         isSubmitting = false;

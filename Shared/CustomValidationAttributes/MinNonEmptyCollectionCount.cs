@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace CocktailsIdeas.Shared
+namespace CocktailsIdeas.Shared.CustomValidationAttributes
 {
-    public class MinCollectionCount : ValidationAttribute
+    public class MinNonEmptyCollectionCount : ValidationAttribute
     {
         public int Count { get; set; }
 
-        public MinCollectionCount(int count)
+        public MinNonEmptyCollectionCount(int count)
         {
             Count = count;
         }
 
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            int count;
             // Automatically pass if value is null. RequiredAttribute should be used to assert a value is not null.
             if (value == null)
             {
                 return null;
             }
 
-            if (value is IEnumerable<object> collection)
+            int count;
+            if (value is IEnumerable<string> collection)
             {
-                count = collection.Count();
+                count = collection.Count(x => !string.IsNullOrWhiteSpace(x));
             }
             else
             {

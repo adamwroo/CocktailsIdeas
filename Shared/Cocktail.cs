@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using CocktailsIdeas.Shared.CustomValidationAttributes;
 
 namespace CocktailsIdeas.Shared
 {
@@ -12,10 +13,10 @@ namespace CocktailsIdeas.Shared
         [MinLength(5, ErrorMessage = "The name has to have at least 5 characters")]
         public string Name { get; set; }
         [Required]
-        [MinCollectionCount(2, ErrorMessage = "Add at least one ingredient")] // todo: this should be 1
+        [MinNonEmptyCollectionCount(1, ErrorMessage = "Add at least one ingredient")]
         public List<string> Ingredients { get; set; } = new List<string>();
         [Required]
-        [MinCollectionCount(2, ErrorMessage = "Add at least one step")] // todo: this should be 1
+        [MinNonEmptyCollectionCount(1, ErrorMessage = "Add at least one step")]
         public List<string> Steps { get; set; } = new List<string>();
     }
 }
