@@ -1,0 +1,44 @@
+﻿<div>
+    <h5>@Title</h5>
+    <ul>
+        @foreach (var element in Elements.Select((e, i) => new { Element = e, Index = i }))
+        {
+            <li>
+                <input value="@element.Element" @oninput="@(e => OnElementChanged(e, element.Index))"
+                       placeholder="new @(Label)" aria-label="@(Label)" />
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Label { get; set; }
+    [Parameter] public List<string> Elements { get; set; }
+    [Parameter] public EditContext EditContext { get; set; }
+    [Parameter] public string FieldName { get; set; }
+
+    private void OnElementChanged(ChangeEventArgs e, in int index)
+    {
+        var changedElement = e?.Value?.ToString();
+
+        if (string.IsNullOrEmpty(changedElement) && Elements.Count > 1)
+        {
+            // if it's now empty and it's not the only one, remove it
+            Elements.RemoveAt(index);
+            var fieldIdentifier = new FieldIdentifier(EditContext.Model, FieldName);
+            EditContext.NotifyFieldChanged(fieldIdentifier);
+            return;
+        }
+
+        if (index == Elements.Count - 1)
+        {
+            // if the last one has been updated, add an empty one at the end of the list
+            Elements.Add(string.Empty);
+            var fieldIdentifier = new FieldIdentifier(EditContext.Model, FieldName);
+            EditContext.NotifyFieldChanged(fieldIdentifier);
+        }
+
+        Elements[index] = changedElement;
+    }
+}
