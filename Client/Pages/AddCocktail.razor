@@ -11,8 +11,20 @@
         @foreach (var ingredient in cocktail.Ingredients.Select((e, i) => new { Ingredient = e, Index = i }))
         {
             <li>
-                <input value="@ingredient.Ingredient" @oninput="@(e => UpdateIngredient(e, ingredient.Index))"
-                       placeholder="new ingredient" aria-label="new ingredient" />
+                <input value="@ingredient.Ingredient" @oninput="@(e => OnIngredientChanged(e, ingredient.Index))"
+                       placeholder="new ingredient" aria-label="ingredient" />
+            </li>
+        }
+    </ul>
+</div>
+<div>
+    <h5>Steps</h5>
+    <ul>
+        @foreach (var ingredient in cocktail.Steps.Select((e, i) => new { Step = e, Index = i }))
+        {
+            <li>
+                <input value="@ingredient.Step" @oninput="@(e => OnStepChanged(e, ingredient.Index))"
+                       placeholder="new step" aria-label="step" />
             </li>
         }
     </ul>
@@ -28,7 +40,49 @@
 
     protected override void OnInitialized()
     {
+        // add placeholders for a new ingredient and step
         cocktail.Ingredients.Add(string.Empty);
+        cocktail.Steps.Add(string.Empty);
+    }
+
+    private void OnIngredientChanged(ChangeEventArgs e, in int index)
+    {
+        var changedIngredient = e?.Value?.ToString();
+
+        if (string.IsNullOrEmpty(changedIngredient) && cocktail.Ingredients.Count > 1)
+        {
+            // if it's now empty and it's not the only one, remove it
+            cocktail.Ingredients.RemoveAt(index);
+            return;
+        }
+
+        if (index == cocktail.Ingredients.Count - 1)
+        {
+            // if the last one has been updated, add an empty one at the end of the list
+            cocktail.Ingredients.Add(string.Empty);
+        }
+
+        cocktail.Ingredients[index] = changedIngredient;
+    }
+
+    private void OnStepChanged(ChangeEventArgs e, in int index)
+    {
+        var changedStep = e?.Value?.ToString();
+
+        if (string.IsNullOrEmpty(changedStep) && cocktail.Steps.Count > 1)
+        {
+            // if it's now empty and it's not the only one, remove it
+            cocktail.Steps.RemoveAt(index);
+            return;
+        }
+
+        if (index == cocktail.Steps.Count - 1)
+        {
+            // if the last one has been updated, add an empty one at the end of the list
+            cocktail.Steps.Add(string.Empty);
+        }
+
+        cocktail.Steps[index] = changedStep;
     }
 
     /*private bool IsCocktailValid()
@@ -42,39 +96,18 @@
 
         isSubmitting = true;
 
-        if (string.IsNullOrEmpty(cocktail.Ingredients[^1]))
-        {
-            cocktail.Ingredients.RemoveAt(cocktail.Ingredients.Count - 1);
-        }
+        // remove the last ingredient and step (they're only placeholders)
+        cocktail.Ingredients.RemoveAt(cocktail.Ingredients.Count - 1);
+        cocktail.Steps.RemoveAt(cocktail.Steps.Count - 1);
 
         var response = await httpClient.PostAsJsonAsync("cocktails", cocktail);
         if (response.IsSuccessStatusCode)
         {
             cocktail = new Cocktail();
             cocktail.Ingredients.Add(string.Empty);
-
-            Console.WriteLine("IsSuccessStatusCode");
         }
 
         isSubmitting = false;
-    }
-
-    private void UpdateIngredient(ChangeEventArgs e, in int index)
-    {
-        var newIngredient = e?.Value?.ToString();
-
-        if (string.IsNullOrEmpty(newIngredient) && cocktail.Ingredients.Count > 1)
-        {
-            cocktail.Ingredients.RemoveAt(index);
-            return;
-        }
-
-        if (index == cocktail.Ingredients.Count - 1)
-        {
-            cocktail.Ingredients.Add(string.Empty);
-        }
-
-        cocktail.Ingredients[index] = newIngredient;
     }
 
 }
