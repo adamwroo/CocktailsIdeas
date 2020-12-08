@@ -3,60 +3,78 @@
 @inject HttpClient httpClient
 
 <h3>Add a cocktail</h3>
-<label>Name: </label>
-<input @bind="cocktail.Name" @bind:event="oninput" />
-<br/>
-<label>Ingredients:</label>
-<input @bind="newIngredient" @bind:event="oninput" />
-<button type="button" @onclick="AddIngredient" disabled="@string.IsNullOrWhiteSpace(newIngredient)">+</button>
-<ul>
-    @foreach (var ingredient in cocktail.Ingredients)
-    {
-        <li>@ingredient</li>
-    }
-</ul>
-<label>Steps:</label>
-<input @bind="newStep" @bind:event="oninput" />
-<button @onclick="AddStep" disabled="@string.IsNullOrWhiteSpace(newStep)">+</button>
-<ol>
-    @foreach (var step in cocktail.Steps)
-    {
-        <li>@step</li>
-    }
-</ol>
+
+<input @bind="cocktail.Name" @bind:event="oninput" placeholder="Cocktail's name" aria-label="Cocktail's name" />
+<div>
+    <h5>Ingredients</h5>
+    <ul>
+        @foreach (var ingredient in cocktail.Ingredients.Select((e, i) => new { Ingredient = e, Index = i }))
+        {
+            <li>
+                <input value="@ingredient.Ingredient" @oninput="@(e => UpdateIngredient(e, ingredient.Index))"
+                       placeholder="new ingredient" aria-label="new ingredient" />
+            </li>
+        }
+    </ul>
+</div>
 
 <div>
-    <button @onclick="AddNewCocktail" disabled="@(!IsCocktailValid())">Add cocktail</button>
+    <button @onclick="AddNewCocktail" disabled="@isSubmitting">Add cocktail</button>
 </div>
 
 @code {
     private Cocktail cocktail = new Cocktail();
-    private string newIngredient;
-    private string newStep;
+    private bool isSubmitting = false;
 
-    private void AddIngredient()
+    protected override void OnInitialized()
     {
-        cocktail.Ingredients.Add(newIngredient);
-        newIngredient = string.Empty;
+        cocktail.Ingredients.Add(string.Empty);
     }
 
-    private void AddStep()
-    {
-        cocktail.Steps.Add(newStep);
-        newStep = string.Empty;
-    }
-
-    private bool IsCocktailValid()
+    /*private bool IsCocktailValid()
     {
         return !string.IsNullOrWhiteSpace(cocktail.Name) && cocktail.Ingredients.Any() && cocktail.Steps.Any();
-    }
+    }*/
 
-    private async void AddNewCocktail()
+    private async Task AddNewCocktail()
     {
+        // todo: validation, see: https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0 (ModelState.AddModelError)
+
+        isSubmitting = true;
+
+        if (string.IsNullOrEmpty(cocktail.Ingredients[^1]))
+        {
+            cocktail.Ingredients.RemoveAt(cocktail.Ingredients.Count - 1);
+        }
+
         var response = await httpClient.PostAsJsonAsync("cocktails", cocktail);
         if (response.IsSuccessStatusCode)
         {
             cocktail = new Cocktail();
+            cocktail.Ingredients.Add(string.Empty);
+
+            Console.WriteLine("IsSuccessStatusCode");
         }
+
+        isSubmitting = false;
     }
+
+    private void UpdateIngredient(ChangeEventArgs e, in int index)
+    {
+        var newIngredient = e?.Value?.ToString();
+
+        if (string.IsNullOrEmpty(newIngredient) && cocktail.Ingredients.Count > 1)
+        {
+            cocktail.Ingredients.RemoveAt(index);
+            return;
+        }
+
+        if (index == cocktail.Ingredients.Count - 1)
+        {
+            cocktail.Ingredients.Add(string.Empty);
+        }
+
+        cocktail.Ingredients[index] = newIngredient;
+    }
+
 }

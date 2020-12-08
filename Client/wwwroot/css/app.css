@@ -49,10 +49,6 @@ a, .btn-link {
         top: 0.5rem;
     }
 
-.cocktails-loading {
-    color: #ffffff
-}
-
 .cocktails-grid {
     display: grid;
     grid-gap: 0.5rem;
