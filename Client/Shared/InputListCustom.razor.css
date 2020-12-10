@@ -1,0 +1,8 @@
+﻿li {
+    list-style-type: disc;
+}
+
+    li:last-child {
+        list-style-type: circle;
+        color: grey;
+    }

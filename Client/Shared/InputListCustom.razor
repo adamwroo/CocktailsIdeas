@@ -1,39 +1,73 @@
 ﻿<div>
     <h5>@Title</h5>
     <ul>
-        <li><button type="button" @onclick="AddEmptyElement">+</button></li>
-        @foreach (var element in Elements.Select((e, i) => new {Element = e, Index = i}))
+        @foreach (var element in Elements.Select((e, i) => new { Element = e, Index = i }))
         {
             <li>
-                <input value="@element.Element" @oninput="@(e => OnElementChanged(e, element.Index))"
-                       placeholder="new @(Label)" aria-label="@(Label)"/>
-                <button type="button" @onclick="@(() => RemoveElement(element.Index))">-</button>
+                <input value="@element.Element" @oninput="@(e => OnElementInput(e, element.Index))" @ref="elementRef"
+                       placeholder="new @(Label)" aria-label="@(Label)" />
+                @if (element.Index != Elements.Count - 1)
+                {
+                    <button type="button" @onclick="@(() => RemoveElement(element.Index))">✕</button>
+                }
             </li>
         }
     </ul>
 </div>
 
 @code {
-    [Parameter] public string Title { get; set; }
-    [Parameter] public string Label { get; set; }
-    [Parameter] public List<string> Elements { get; set; }
-    [Parameter] public EditContext EditContext { get; set; }
-    [Parameter] public string FieldName { get; set; }
 
-    private void AddEmptyElement()
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter]
+    public List<string> Elements { get; set; }
+
+    [Parameter]
+    public EditContext EditContext { get; set; }
+
+    [Parameter]
+    public string FieldName { get; set; }
+
+    private List<ElementReference> elementsRefs = new List<ElementReference>();
+
+    private ElementReference elementRef
     {
-        Elements.Add(string.Empty);
+        set => elementsRefs.Add(value);
+    }
+
+    protected override void OnParametersSet()
+    {
+        Elements ??= new List<string>();
+        if (!Elements.Any())
+        {
+            Elements.Add(string.Empty);
+        }
+    }
+
+    private void OnElementInput(ChangeEventArgs e, in int index)
+    {
+        var newValue = e?.Value?.ToString();
+        if (string.IsNullOrEmpty(newValue) && index != Elements.Count - 1)
+        {
+            RemoveElement(index);
+            return;
+        }
+        Elements[index] = newValue;
+        if (!string.IsNullOrEmpty(newValue) && index == Elements.Count - 1)
+        {
+            Elements.Add(string.Empty);
+        }
+        NotifyFieldChanged();
     }
 
     private void RemoveElement(in int index)
     {
         Elements.RemoveAt(index);
-        NotifyFieldChanged();
-    }
-
-    private void OnElementChanged(ChangeEventArgs e, in int index)
-    {
-        Elements[index] =  e?.Value?.ToString();
+        elementsRefs[index].FocusAsync();
         NotifyFieldChanged();
     }
 
