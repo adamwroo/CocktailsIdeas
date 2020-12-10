@@ -8,7 +8,7 @@
                        placeholder="new @(Label)" aria-label="@(Label)" />
                 @if (element.Index != Elements.Count - 1)
                 {
-                    <button type="button" @onclick="@(() => RemoveElement(element.Index))">✕</button>
+                    <button type="button" @onclick="@(() => RemoveElement(element.Index))" tabindex="-1">✕</button>
                 }
             </li>
         }
