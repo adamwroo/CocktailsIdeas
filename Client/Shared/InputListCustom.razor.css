@@ -6,3 +6,12 @@
         list-style-type: circle;
         color: grey;
     }
+
+    li > input, li > button {
+        margin: 0.25rem 0.75rem;
+    }
+
+    li > button {
+        border-style: hidden;
+        border-radius: 0.75rem;
+    }

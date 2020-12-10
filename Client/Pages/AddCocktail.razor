@@ -2,33 +2,35 @@
 @using CocktailsIdeas.Shared
 @inject HttpClient httpClient
 
-<h3>Add a cocktail</h3>
+<div>
+    <h3>Add a cocktail</h3>
 
-<EditForm EditContext="@editContext" OnValidSubmit="AddNewCocktail">
-    <DataAnnotationsValidator />
-    <InputText @bind-Value="cocktail.Name" placeholder="Cocktail's name" aria-label="Cocktail's name" />
-    <ValidationMessage For="@(() => cocktail.Name)" />
-    <InputListCustom
-        Title="Ingredients"
-        Label="ingredient"
-        Elements="cocktail.Ingredients"
-        EditContext="editContext"
-        FieldName="@nameof(cocktail.Ingredients)"
+    <EditForm EditContext="@editContext" OnValidSubmit="AddNewCocktail">
+        <DataAnnotationsValidator />
+        <InputText @bind-Value="cocktail.Name" class="cocktail-name" placeholder="Cocktail's name" aria-label="Cocktail's name" />
+        <ValidationMessage For="@(() => cocktail.Name)" />
+        <InputListCustom
+            Title="Ingredients"
+            Label="ingredient"
+            Elements="cocktail.Ingredients"
+            EditContext="editContext"
+            FieldName="@nameof(cocktail.Ingredients)"
         />
-    <ValidationMessage For="@(() => cocktail.Ingredients)" />
-    <InputListCustom
-        Title="Steps"
-        Label="step"
-        Elements="cocktail.Steps"
-        EditContext="editContext"
-        FieldName="@nameof(cocktail.Steps)"
-    />
-    <ValidationMessage For="@(() => cocktail.Steps)" />
+        <ValidationMessage For="@(() => cocktail.Ingredients)" />
+        <InputListCustom
+            Title="Steps"
+            Label="step"
+            Elements="cocktail.Steps"
+            EditContext="editContext"
+            FieldName="@nameof(cocktail.Steps)"
+        />
+        <ValidationMessage For="@(() => cocktail.Steps)" />
 
-    <div>
-        <button type="submit" disabled="@isSubmitting">Add cocktail</button>
-    </div>
-</EditForm>
+        <div>
+            <button type="submit" disabled="@isSubmitting">Add cocktail</button>
+        </div>
+    </EditForm>
+</div>
 
 @code {
     private Cocktail cocktail = new Cocktail();

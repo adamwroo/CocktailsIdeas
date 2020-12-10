@@ -1,0 +1,14 @@
+﻿::deep input.cocktail-name {
+    font-size: larger;
+    margin-bottom: 1rem;
+}
+
+::deep input {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+}
+
+::deep input:focus {
+    outline: none;
+}
