@@ -11,7 +11,7 @@
             <h5>Name</h5>
             <ValidationMessage For="@(() => cocktail.Name)"/>
         </div>
-        <InputText @bind-Value="cocktail.Name" class="cocktail-name" placeholder="cocktail's name" aria-label="Cocktail's name"/>
+        <FocusableInputText @ref="cocktailNameRef" @bind-Value="cocktail.Name" class="cocktail-name" placeholder="cocktail's name" aria-label="Cocktail's name"/>
         <InputListCustom
             Title="Ingredients"
             Label="ingredient"
@@ -39,10 +39,19 @@
     private Cocktail cocktail = new Cocktail();
     private bool isSubmitting = false;
     private EditContext editContext;
+    private FocusableInputText cocktailNameRef;
 
     protected override void OnInitialized()
     {
         editContext = new EditContext(cocktail);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await cocktailNameRef.FocusAsync();
+        }
     }
 
     private async Task AddNewCocktail()
