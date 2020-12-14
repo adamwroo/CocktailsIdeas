@@ -54,16 +54,18 @@ a, .btn-link {
     grid-gap: 0.5rem;
     grid-template-columns: repeat(auto-fill, minmax(350px,1fr));
     padding-bottom: 1rem;
-    /*grid-auto-rows: 1rem;*/
+    grid-auto-rows: 0.5rem;
 }
 
 .cocktail-card {
     border: 1px solid #c9c9c9;
     border-radius: 7px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-    padding: 1rem;
-    max-height: 300px;
     overflow: hidden;
+}
+
+.cocktail-card-content {
+    padding: 1rem;
 }
 
     .cocktail-card > h3 {

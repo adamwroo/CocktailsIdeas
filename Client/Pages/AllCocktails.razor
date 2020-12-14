@@ -28,8 +28,8 @@ else
         cocktails = await httpClient.GetFromJsonAsync<List<Cocktail>>("cocktails");
     }
 
-    /*protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await JSRuntime.InvokeVoidAsync("dynamicRowSpan.initialize");
-    }*/
+    }
 }
