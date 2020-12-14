@@ -29,6 +29,10 @@
                 }
             </div>
         </div>
+        @if (!string.IsNullOrWhiteSpace(Cocktail.Source))
+        {
+            <a href="@Cocktail.Source">Source</a>
+        }
     </div>
 </div>
 
