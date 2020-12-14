@@ -1,10 +1,13 @@
-﻿::deep input.cocktail-name {
-    font-size: larger;
+﻿::deep input {
     margin-bottom: 1rem;
 }
 
-    ::deep input.cocktail-name.modified.valid {
-        outline: none;
+    ::deep input.cocktail-name {
+        font-size: larger;
+    }
+
+    ::deep input.modified.valid {
+         outline: none;
     }
 
 ::deep input {

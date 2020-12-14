@@ -7,11 +7,13 @@
 
     <EditForm EditContext="@editContext" OnValidSubmit="AddNewCocktail">
         <DataAnnotationsValidator />
-        <div class="container-with-validation-message">
-            <h5>Name</h5>
-            <ValidationMessage For="@(() => cocktail.Name)"/>
+        <div>
+            <div class="container-with-validation-message">
+                <h5>Name</h5>
+                <ValidationMessage For="@(() => cocktail.Name)" />
+            </div>
         </div>
-        <FocusableInputText @ref="cocktailNameRef" @bind-Value="cocktail.Name" class="cocktail-name" placeholder="cocktail's name" aria-label="Cocktail's name"/>
+        <FocusableInputText @ref="cocktailNameRef" @bind-Value="cocktail.Name" class="cocktail-name" placeholder="cocktail's name" aria-label="cocktail's name"/>
         <InputListCustom
             Title="Ingredients"
             Label="ingredient"
@@ -28,6 +30,17 @@
             FieldName="@nameof(cocktail.Steps)"
             ValidationMessageFor="@(() => cocktail.Steps)"
         />
+        <div>
+            <div class="container-with-validation-message">
+                <h5>Source</h5>
+                <ValidationMessage For="@(() => cocktail.Source)" />
+            </div>
+            <InputText
+                ValueChanged="@( (string s) => MyValueChangeHandler(s) )" 
+                Value="@cocktail.Source"
+                ValueExpression="@( () => cocktail.Source )"
+                placeholder="cocktail's source" aria-label="cocktail's source"/>
+        </div>
 
         <div>
             <button type="submit" disabled="@isSubmitting">Add cocktail</button>
@@ -52,6 +65,12 @@
         {
             await cocktailNameRef.FocusAsync();
         }
+    }
+
+    private void MyValueChangeHandler(string theUserInput)
+    {
+        // workaround so 'Source' is not validated after it has been modified and its value cleared
+        cocktail.Source = string.IsNullOrWhiteSpace(theUserInput) ? null : theUserInput;
     }
 
     private async Task AddNewCocktail()
