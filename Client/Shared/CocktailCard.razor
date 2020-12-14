@@ -1,0 +1,35 @@
+﻿@using CocktailsIdeas.Shared
+<div class="cocktail-card">
+    <h3>@Cocktail.Name</h3>
+    <hr/>
+    <div class="cocktail-card-desc">
+        <div>
+            <ul>
+                @foreach (var ingredient in Cocktail.Ingredients)
+                {
+                    <li>@ingredient</li>
+                }
+            </ul>
+        </div>
+        <div>
+            <h6>Preparation:</h6>
+            @if (Cocktail.Steps.Count == 1)
+            {
+                <p>@Cocktail.Steps[0]</p>
+            }
+            else
+            {
+                <ol>
+                    @foreach (var step in Cocktail.Steps)
+                    {
+                        <li>@step</li>
+                    }
+                </ol>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Cocktail Cocktail { get; set; }
+}
