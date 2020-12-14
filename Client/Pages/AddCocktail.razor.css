@@ -3,6 +3,10 @@
     margin-bottom: 1rem;
 }
 
+    ::deep input.cocktail-name.modified.valid {
+        outline: none;
+    }
+
 ::deep input {
     border-top-style: hidden;
     border-right-style: hidden;
@@ -12,3 +16,17 @@
 ::deep input:focus {
     outline: none;
 }
+
+::deep .container-with-validation-message {
+    display: flex;
+    align-items: center;
+}
+
+    ::deep .container-with-validation-message > h5 {
+        margin: 0;
+        padding: 0;
+    }
+
+    ::deep .container-with-validation-message > .validation-message {
+        margin-left: 0.5rem;
+    }

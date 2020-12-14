@@ -7,24 +7,27 @@
 
     <EditForm EditContext="@editContext" OnValidSubmit="AddNewCocktail">
         <DataAnnotationsValidator />
-        <InputText @bind-Value="cocktail.Name" class="cocktail-name" placeholder="Cocktail's name" aria-label="Cocktail's name" />
-        <ValidationMessage For="@(() => cocktail.Name)" />
+        <div class="container-with-validation-message">
+            <h5>Name</h5>
+            <ValidationMessage For="@(() => cocktail.Name)"/>
+        </div>
+        <InputText @bind-Value="cocktail.Name" class="cocktail-name" placeholder="cocktail's name" aria-label="Cocktail's name"/>
         <InputListCustom
             Title="Ingredients"
             Label="ingredient"
             Elements="cocktail.Ingredients"
             EditContext="editContext"
             FieldName="@nameof(cocktail.Ingredients)"
+            ValidationMessageFor="@(() => cocktail.Ingredients)"
         />
-        <ValidationMessage For="@(() => cocktail.Ingredients)" />
         <InputListCustom
             Title="Steps"
             Label="step"
             Elements="cocktail.Steps"
             EditContext="editContext"
             FieldName="@nameof(cocktail.Steps)"
+            ValidationMessageFor="@(() => cocktail.Steps)"
         />
-        <ValidationMessage For="@(() => cocktail.Steps)" />
 
         <div>
             <button type="submit" disabled="@isSubmitting">Add cocktail</button>

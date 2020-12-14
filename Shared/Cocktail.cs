@@ -9,8 +9,8 @@ namespace CocktailsIdeas.Shared
     {
         [JsonPropertyName("id")]
         public string id { get; set; }
-        [Required(ErrorMessage = "Please provide a cocktail's name")]
-        [MinLength(5, ErrorMessage = "The name has to have at least 5 characters")]
+        [Required(ErrorMessage = "Provide a name")]
+        [MinLength(3, ErrorMessage = "Name has lass than 3 characters")]
         public string Name { get; set; }
         [Required]
         [MinNonEmptyCollectionCount(1, ErrorMessage = "Add at least one ingredient")]

@@ -1,5 +1,12 @@
-﻿<div>
-    <h5>@Title</h5>
+﻿@using System.Linq.Expressions
+<div>
+    <div class="container-with-validation-message">
+        <h5>@Title</h5>
+        @if (ValidationMessageFor != null)
+        {
+            <ValidationMessage For="@ValidationMessageFor" />
+        }
+    </div>
     <ul>
         @foreach (var element in Elements.Select((e, i) => new { Element = e, Index = i }))
         {
@@ -31,6 +38,9 @@
 
     [Parameter]
     public string FieldName { get; set; }
+
+    [Parameter]
+    public Expression<Func<List<string>>>? ValidationMessageFor { get; set; }
 
     private List<ElementReference> elementsRefs = new List<ElementReference>();
 
